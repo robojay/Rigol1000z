@@ -200,6 +200,19 @@ class _Rigol1000zTrigger:
         self._osc.visa_write(':trig:hold %.3e' % holdoff)
         return self.get_trigger_holdoff_s()
 
+    def get_trigger_status(self):
+        return self._osc.visa_ask(':trig:stat?').strip()
+
+    def get_trigger_sweep(self):
+        return self._osc.visa_ask(':trig:swe?').strip()
+
+    def set_trigger_sweep(self, sweep):
+        sweep = sweep.lower()
+        assert sweep in ('auto', 'norm', 'sing')
+        self._osc.visa_write(':trig:swe %s' % sweep)
+        return self.get_trigger_sweep()
+
+
 class _Rigol1000zTimebase:
     '''
     Handles the timebase configuration (horizontal axis).
