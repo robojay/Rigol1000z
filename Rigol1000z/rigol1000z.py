@@ -142,6 +142,7 @@ class _Rigol1000zChannel:
         max_num_pts = 250000
         num_blocks = info['points'] // max_num_pts
         last_block_pts = info['points'] % max_num_pts
+        num_pts = max_num_pts
 
         datas = []
         for i in _tqdm.tqdm(range(num_blocks+1), ncols=60):
@@ -152,9 +153,10 @@ class _Rigol1000zChannel:
                 if last_block_pts:
                     self._osc.visa_write(':wav:star %i' % (1+num_blocks*250000))
                     self._osc.visa_write(':wav:stop %i' % (num_blocks*250000+last_block_pts))
+                    num_pts = last_block_pts
                 else:
                     break
-            data = self._osc.visa_ask_raw(':wav:data?')[11:]
+            data = self._osc.visa_ask_raw(':wav:data?', num_pts)[11:-1]
             data = _np.frombuffer(data, 'B')
             datas.append(data)
 
