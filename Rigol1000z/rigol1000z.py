@@ -186,10 +186,10 @@ class _Rigol1000zTrigger:
     def __init__(self, osc):
         self._osc = osc
 
-    def get_trigger_level_V(self):
+    def get_trigger_level(self):
         return self._osc.visa_ask(':trig:edg:lev?')
 
-    def set_trigger_level_V(self, level):
+    def set_trigger_level(self, level):
         self._osc.visa_write(':trig:edg:lev %.3e' % level)
         return self.get_trigger_level_V()
 
