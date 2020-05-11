@@ -186,12 +186,12 @@ class _Rigol1000zTrigger:
     def __init__(self, osc):
         self._osc = osc
 
-    def get_trigger_level(self):
+    def get_trigger_edge_level(self):
         return self._osc.visa_ask(':trig:edg:lev?')
 
-    def set_trigger_level(self, level):
+    def set_trigger_edge_level(self, level):
         self._osc.visa_write(':trig:edg:lev %.3e' % level)
-        return self.get_trigger_level_V()
+        return self.get_trigger_edge_level()
 
     def get_trigger_holdoff_s(self):
         return self._osc.visa_ask(':trig:hold?')
@@ -211,6 +211,35 @@ class _Rigol1000zTrigger:
         assert sweep in ('auto', 'norm', 'sing')
         self._osc.visa_write(':trig:swe %s' % sweep)
         return self.get_trigger_sweep()
+
+    def get_trigger_edge_source(self):
+        return self._osc.visa_ask(':trig:edg:sour?').strip()
+
+    def set_trigger_edge_source(self, source):
+        source = source.lower()
+        # mixed signal scopes have more options here...
+        assert source in ("chan1", "chan2", "chan3", "chan4", "ac")
+        self._osc.visa_write(':trig:edg:sour %s' % source)
+        return self.get_trigger_edge_source()
+
+    def get_trigger_edge_slope(self):
+        return self._osc.visa_ask(':trig:edg:slop?').strip()
+
+    def set_trigger_edge_slope(self, slope):
+        slope = slope.lower()
+        assert slope in ("pos", "neg", "rfal")
+        self._osc.visa_write(':trig:edg:slop %s' % slope)
+        return self.get_trigger_edge_slope()
+
+    def get_trigger_mode(self):
+        return self._osc.visa_ask(':trig:mode?').strip()
+
+    def set_trigger_mode(self, mode):
+        mode = mode.lower()
+        # more options are available...
+        assert mode in ("edge")
+        self._osc.visa_write(':trig:mod %s' % mode)
+        return self.get_trigger_mode()
 
 
 class _Rigol1000zTimebase:
