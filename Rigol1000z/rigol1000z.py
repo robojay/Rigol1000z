@@ -62,16 +62,19 @@ class _Rigol1000zChannel:
         self.visa_write(':off %.4e' % offset)
         return self.get_offset_V()
 
-    def get_range_V(self):
+    def get_range(self):
         return self.visa_ask(':rang?')
 
-    def set_range_V(self, range):
-        assert 8e-3 <= range <= 800.
+    def set_range(self, range):
+        # assert 8e-3 <= range <= 800.
         self.visa_write(':rang %.4e' % range)
         return self.get_range_V()
 
-    def set_vertical_scale_V(self, scale):
-        assert 1e-3 <= scale <= 100
+    def get_vertical_scale(self):
+        return self.visa_ask(':scal?')
+
+    def set_vertical_scale(self, scale):
+        #assert 1e-3 <= scale <= 100
         self.visa_write(':scal %.4e' % scale)
 
     def get_probe_ratio(self):
