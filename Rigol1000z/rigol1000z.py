@@ -218,7 +218,7 @@ class _Rigol1000zTrigger:
     def set_trigger_edge_source(self, source):
         source = source.lower()
         # mixed signal scopes have more options here...
-        assert source in ("chan1", "chan2", "chan3", "chan4", "ac")
+        assert source in ('chan1', 'chan2', 'chan3', 'chan4', 'ac')
         self._osc.visa_write(':trig:edg:sour %s' % source)
         return self.get_trigger_edge_source()
 
@@ -227,7 +227,7 @@ class _Rigol1000zTrigger:
 
     def set_trigger_edge_slope(self, slope):
         slope = slope.lower()
-        assert slope in ("pos", "neg", "rfal")
+        assert slope in ('pos', 'neg', 'rfal')
         self._osc.visa_write(':trig:edg:slop %s' % slope)
         return self.get_trigger_edge_slope()
 
